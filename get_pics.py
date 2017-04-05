@@ -7,6 +7,7 @@ import os
 import threading
 import fileinput
 from multiprocessing import Pool
+import log
 import multiprocessing
 
 PATH = '/Users/HirosueRyouko/Pictures/MMA/'
@@ -24,9 +25,12 @@ def get_page(keyword, page_no=1):
 
 
 def keyword2id(keyword='Oil on canvas'):
+    log.log_write(sentence='keyword2id begin,keyword = '+keyword,path=PATH,name='MMA '+KEYWORD)
+
     LIST = []
     cal = 0
     for i in range(1000):
+
         try:
             page = get_page(keyword, page_no=i + 1)
         except:
@@ -56,6 +60,7 @@ def keyword2id(keyword='Oil on canvas'):
         # print(i,id_list)
         # print(i,LIST)
         if (id_list == []): break
+        log.log_write(sentence='page = '+str(i+1)+' Num of IDs: '+str(len(id_list)),path=PATH,name='MMA '+KEYWORD)
     # print(LIST)
     list_create(LIST, kind='id', keyword=keyword)
     return LIST
@@ -215,7 +220,6 @@ def download_pic(url, keyword, name):
     f.close()
     return False
 
-
 def all_in_one(keyword):
     KEYWORD=keyword
     id_list = keyword2id(keyword=keyword)
@@ -227,7 +231,7 @@ def all_in_one(keyword):
 # keyword2id()
 # print(get_page(keyword='Oil on canvas',page_no=7))
 # list_read(keyword='Oil on canvas')
-url2jpg(id_url_list=list_read(kind='url', keyword='Oil paintings'), keyword='Oil paintings')
+# url2jpg(id_url_list=list_read(kind='url', keyword='Oil paintings'), keyword='Oil paintings')
 # url_sub(['206321'])
 # id2url(list_read(kind='id',keyword='Oil paintings'))
-# all_in_one('Oil paintings')
+all_in_one('Oil paintings')
